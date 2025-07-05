@@ -8,7 +8,7 @@ const Intro = () =>{
         <div className="flex flex-col gap-4 w-9/12">
             <h1 className="text-4xl font-bold">Hola! Soy yo Edu</h1>
             <p className="text-base text-gray-700">
-                Ingeniero Fullstack con 1 año de experiencia en strartups. Excelente para trabajar diseñanado aplicaciones que resuelvan problemas de un forma agil y sencilla. Mi experiencia esta basada en le desarrollo de aplicaciones backend como de frontend.
+                Desarrollador Fullstack con 1 año de experiencia en strartups. Excelente para trabajar diseñanado aplicaciones que resuelvan problemas de un forma agil y sencilla. Mi experiencia esta basada en le desarrollo de aplicaciones backend como de frontend.
             </p>
         </div>
         <div className="w-3/12 flex-1">
