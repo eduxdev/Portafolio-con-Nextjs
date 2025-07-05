@@ -1,7 +1,8 @@
 import Image from "next/image";
-import { Button } from "./ui/button";
 import Link from "next/link";
 import { RainbowButton } from "./magicui/rainbow-button";
+import { Button } from "./ui/button";
+
 
 interface Project {
   title: string;
@@ -64,11 +65,11 @@ const Projects = () => {
                 ))}
               </div>
               <div className="flex gap-2 mt-2">
-                <Link href={item.link} target="_blank">
-                <RainbowButton variant="default">Ver</RainbowButton>
+                <Link href={item.link} target="_blank" rel="noopener noreferrer">
+                  <RainbowButton>Ver</RainbowButton>
                 </Link>
-                <Link href={item.code} target="_blank">
-                <Button variant="outline">Código</Button>
+                <Link href={item.code} target="_blank" rel="noopener noreferrer">
+                  <Button variant="outline">Código</Button>
                 </Link>
               </div>
             </div>
