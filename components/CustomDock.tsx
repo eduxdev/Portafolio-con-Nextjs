@@ -101,7 +101,6 @@ const DATA = {
 };
 
 export function CustomDock({
-  orientation,
 }: {
   orientation: "vertical" | "horizontal";
 }) {
