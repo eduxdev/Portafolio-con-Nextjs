@@ -1,9 +1,15 @@
 "use client";
 
-import { CalendarIcon, HomeIcon, MailIcon, Moon, PencilIcon, Sun } from "lucide-react";
+import {
+  CalendarIcon,
+  HomeIcon,
+  MailIcon,
+  Moon,
+  PencilIcon,
+  Sun,
+} from "lucide-react";
 import Link from "next/link";
-import React from "react";
-
+import React, { useEffect, useState } from "react";
 
 import { buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -94,14 +100,38 @@ const DATA = {
   },
 };
 
-export function CustomDock({orientation} : {orientation: "vertical" | "horizontal"
-
+export function CustomDock({
+  orientation,
+}: {
+  orientation: "vertical" | "horizontal";
 }) {
-    const {resolvedTheme, setTheme} = useTheme()
+  const { resolvedTheme, setTheme } = useTheme();
+  const [ isMobile, setIsMobile ] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth <= 768);
+
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
-    <div className="fixed left-40 top-1/4 bottom-1/2 items-center justify-center"> 
+    <div
+      className={
+        isMobile
+          ? "fixed left-1/2 right-1/2 bottom-5 flex items-center justify-center"
+          : "fixed left-40 top-1/4 bottom-1/2 items-center justify-center"
+      }
+    >
       <TooltipProvider>
-        <Dock direction="middle" orientation={orientation}>
+        <Dock direction="middle" orientation={isMobile ? "horizontal" : "vertical"}>
           {DATA.navbar.map((item) => (
             <DockIcon key={item.label}>
               <Tooltip>
@@ -111,7 +141,7 @@ export function CustomDock({orientation} : {orientation: "vertical" | "horizonta
                     aria-label={item.label}
                     className={cn(
                       buttonVariants({ variant: "ghost", size: "icon" }),
-                      "size-12 rounded-full",
+                      "size-12 rounded-full"
                     )}
                   >
                     <item.icon className="size-4" />
@@ -123,7 +153,7 @@ export function CustomDock({orientation} : {orientation: "vertical" | "horizonta
               </Tooltip>
             </DockIcon>
           ))}
-          <Separator orientation="horizontal" className="h-full" />
+          <Separator orientation={isMobile ? "vertical" : "horizontal"} className="h-full" />
           {Object.entries(DATA.contact.social).map(([name, social]) => (
             <DockIcon key={name}>
               <Tooltip>
@@ -133,7 +163,7 @@ export function CustomDock({orientation} : {orientation: "vertical" | "horizonta
                     aria-label={social.name}
                     className={cn(
                       buttonVariants({ variant: "ghost", size: "icon" }),
-                      "size-12 rounded-full",
+                      "size-12 rounded-full"
                     )}
                   >
                     <social.icon className="size-4" />
@@ -145,17 +175,19 @@ export function CustomDock({orientation} : {orientation: "vertical" | "horizonta
               </Tooltip>
             </DockIcon>
           ))}
-          <Separator orientation="horizontal" className="h-full" />
+          <Separator orientation={isMobile ? "vertical" : "horizontal"} className="h-full" />
           <DockIcon>
             <Tooltip>
               <TooltipTrigger asChild>
                 <div className="size-12 rounded-full flex items-center justify-center">
-                    {resolvedTheme === "light" ? (
-                        <Sun className="size-4" onClick={() => setTheme("dark")}/>
-                    ) : (
-                        <Moon className="size-4" onClick={() => setTheme("light")}/>
-                    )}
-                    
+                  {resolvedTheme === "light" ? (
+                    <Sun className="size-4" onClick={() => setTheme("dark")} />
+                  ) : (
+                    <Moon
+                      className="size-4"
+                      onClick={() => setTheme("light")}
+                    />
+                  )}
                 </div>
               </TooltipTrigger>
               <TooltipContent>
@@ -165,8 +197,8 @@ export function CustomDock({orientation} : {orientation: "vertical" | "horizonta
           </DockIcon>
         </Dock>
       </TooltipProvider>
-      </div>
+    </div>
   );
 }
 
-export default CustomDock
+export default CustomDock;
