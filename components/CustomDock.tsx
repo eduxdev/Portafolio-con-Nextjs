@@ -100,20 +100,20 @@ const DATA = {
   },
 };
 
-export function CustomDock({
-}: {
-  orientation: "vertical" | "horizontal";
-}) {
+export function CustomDock() {
   const { resolvedTheme, setTheme } = useTheme();
-  const [ isMobile, setIsMobile ] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true)
-
+    setMounted(true);
+    
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
     };
+
+    // Ejecutar inmediatamente para establecer el estado inicial
+    handleResize();
 
     window.addEventListener("resize", handleResize);
 
@@ -126,80 +126,78 @@ export function CustomDock({
     <div
       className={
         isMobile
-          ? "fixed left-1/2 right-1/2 bottom-5 flex items-center justify-center"
+          ? "fixed left-0 right-0 bottom-5 flex items-center justify-center"
           : "fixed left-40 top-1/4 bottom-1/2 items-center justify-center"
       }
     >
-        {mounted && (
-      <TooltipProvider>
-        
-        <Dock direction="middle" orientation={isMobile ? "horizontal" : "vertical"}>
-          {DATA.navbar.map((item) => (
-            <DockIcon key={item.label}>
+      {mounted && (
+        <TooltipProvider>
+          <Dock direction="middle" orientation={isMobile ? "horizontal" : "vertical"}>
+            {DATA.navbar.map((item) => (
+              <DockIcon key={item.label}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Link
+                      href={item.href}
+                      aria-label={item.label}
+                      className={cn(
+                        buttonVariants({ variant: "ghost", size: "icon" }),
+                        "size-12 rounded-full"
+                      )}
+                    >
+                      <item.icon className="size-4" />
+                    </Link>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{item.label}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </DockIcon>
+            ))}
+            <Separator orientation={isMobile ? "vertical" : "horizontal"} className="h-full" />
+            {Object.entries(DATA.contact.social).map(([name, social]) => (
+              <DockIcon key={name}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Link
+                      href={social.url}
+                      aria-label={social.name}
+                      className={cn(
+                        buttonVariants({ variant: "ghost", size: "icon" }),
+                        "size-12 rounded-full"
+                      )}
+                    >
+                      <social.icon className="size-4" />
+                    </Link>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{name}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </DockIcon>
+            ))}
+            <Separator orientation={isMobile ? "vertical" : "horizontal"} className="h-full" />
+            <DockIcon>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Link
-                    href={item.href}
-                    aria-label={item.label}
-                    className={cn(
-                      buttonVariants({ variant: "ghost", size: "icon" }),
-                      "size-12 rounded-full"
+                  <div className="size-12 rounded-full flex items-center justify-center">
+                    {resolvedTheme === "light" ? (
+                      <Sun className="size-4" onClick={() => setTheme("dark")} />
+                    ) : (
+                      <Moon
+                        className="size-4"
+                        onClick={() => setTheme("light")}
+                      />
                     )}
-                  >
-                    <item.icon className="size-4" />
-                  </Link>
+                  </div>
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p>{item.label}</p>
+                  <p>Theme</p>
                 </TooltipContent>
               </Tooltip>
             </DockIcon>
-          ))}
-          <Separator orientation={isMobile ? "vertical" : "horizontal"} className="h-full" />
-          {Object.entries(DATA.contact.social).map(([name, social]) => (
-            <DockIcon key={name}>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Link
-                    href={social.url}
-                    aria-label={social.name}
-                    className={cn(
-                      buttonVariants({ variant: "ghost", size: "icon" }),
-                      "size-12 rounded-full"
-                    )}
-                  >
-                    <social.icon className="size-4" />
-                  </Link>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>{name}</p>
-                </TooltipContent>
-              </Tooltip>
-            </DockIcon>
-          ))}
-          <Separator orientation={isMobile ? "vertical" : "horizontal"} className="h-full" />
-          <DockIcon>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div className="size-12 rounded-full flex items-center justify-center">
-                  {resolvedTheme === "light" ? (
-                    <Sun className="size-4" onClick={() => setTheme("dark")} />
-                  ) : (
-                    <Moon
-                      className="size-4"
-                      onClick={() => setTheme("light")}
-                    />
-                  )}
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Theme</p>
-              </TooltipContent>
-            </Tooltip>
-          </DockIcon>
-        </Dock>
-        
-      </TooltipProvider>
+          </Dock>
+        </TooltipProvider>
       )}
     </div>
   );
