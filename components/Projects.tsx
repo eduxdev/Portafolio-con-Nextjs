@@ -38,7 +38,7 @@ const Projects = () => {
   return (
     <div className="flex flex-col gap-4 max-w-6xl">
       <h1 className="text-2xl font-bold">Proyectos</h1>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid md:grid-cols-2 sm:grid-cols-1 gap-4">
         {projectsData?.map((item, index) => (
           
           <div

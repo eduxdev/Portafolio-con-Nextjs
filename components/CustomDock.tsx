@@ -107,9 +107,10 @@ export function CustomDock({
 }) {
   const { resolvedTheme, setTheme } = useTheme();
   const [ isMobile, setIsMobile ] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setIsMobile(window.innerWidth <= 768);
+    setMounted(true)
 
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
@@ -130,7 +131,9 @@ export function CustomDock({
           : "fixed left-40 top-1/4 bottom-1/2 items-center justify-center"
       }
     >
+        {mounted && (
       <TooltipProvider>
+        
         <Dock direction="middle" orientation={isMobile ? "horizontal" : "vertical"}>
           {DATA.navbar.map((item) => (
             <DockIcon key={item.label}>
@@ -196,7 +199,9 @@ export function CustomDock({
             </Tooltip>
           </DockIcon>
         </Dock>
+        
       </TooltipProvider>
+      )}
     </div>
   );
 }
