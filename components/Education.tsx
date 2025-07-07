@@ -39,7 +39,7 @@ const Education = () => {
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
               {item.courseName} en {item?.collegeName || item?.schooldName}
             </h3>
-           <p className="text-base text-gray-700">
+           <p className="text-base text-gray-700 dark:text-gray-300">
             {item.address}
            </p>
           </li>

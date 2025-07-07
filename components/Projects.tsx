@@ -36,13 +36,14 @@ const projectsData: Project[] = [
 
 const Projects = () => {
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 max-w-6xl">
       <h1 className="text-2xl font-bold">Proyectos</h1>
       <div className="grid grid-cols-2 gap-4">
         {projectsData?.map((item, index) => (
+          
           <div
             key={index}
-            className="flex flex-col border border-gray-300 rounded-md"
+            className="flex flex-col border border-gray-300 dark:border-gray-800 rounded-md h-full"
           >
             <Image
               src={item.imagen}
@@ -51,20 +52,22 @@ const Projects = () => {
               width={500}
               height={300}
             />
-            <div className="flex flex-col gap-3 p-4">
-              <h2 className="text-lg font-bold">{item.title}</h2>
-              <p className="text-sm text-gray-500">{item.description}</p>
-              <div className="flex gap-2 flex-wrap">
-                {item.technologies.map((tech, index) => (
-                  <div
-                    key={index}
-                    className="flex border border-gray-200 rounded-md px-2 py-1 text-sm bg-gray-200 text-gray-800"
-                  >
-                    {tech}
-                  </div>
-                ))}
+            <div className="flex flex-col flex-1 p-4">
+              <div className="flex flex-col flex-1">
+                <h2 className="text-lg font-bold">{item.title}</h2>
+                <p className="text-base text-gray-500 h-24 overflow-y-auto my-3">{item.description}</p>
+                <div className="flex gap-2 flex-wrap">
+                  {item.technologies.map((tech, index) => (
+                    <div
+                      key={index}
+                      className="flex border border-gray-200 rounded-md px-2 py-1 text-sm bg-gray-200 text-gray-800"
+                    >
+                      {tech}
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div className="flex gap-2 mt-2">
+              <div className="flex gap-2 mt-4">
                 <Link href={item.link} target="_blank" rel="noopener noreferrer">
                   <RainbowButton>Ver</RainbowButton>
                 </Link>
@@ -74,6 +77,7 @@ const Projects = () => {
               </div>
             </div>
           </div>
+// ... existing code ...
         ))}
       </div>
     </div>
