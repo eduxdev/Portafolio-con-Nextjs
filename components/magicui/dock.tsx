@@ -21,6 +21,7 @@ export interface DockProps extends VariantProps<typeof dockVariants> {
   direction?: "top" | "middle" | "bottom";
   children: React.ReactNode;
   orientation?: "vertical" | "horizontal";
+  enableAnimation?: boolean;
 }
 
 const DEFAULT_SIZE = 40;
@@ -41,7 +42,7 @@ const Dock = React.forwardRef<HTMLDivElement, DockProps>(
       iconDistance = DEFAULT_DISTANCE,
       direction = "middle",
       orientation = "horizontal",
-      
+      enableAnimation = true,
       ...props
     },
     ref,
@@ -62,6 +63,7 @@ const Dock = React.forwardRef<HTMLDivElement, DockProps>(
             size: iconSize,
             magnification: iconMagnification,
             distance: iconDistance,
+            enableAnimation,
           });
         }
         return child;
@@ -106,6 +108,7 @@ export interface DockIconProps
   className?: string;
   children?: React.ReactNode;
   props?: PropsWithChildren;
+  enableAnimation?: boolean;
 }
 
 const DockIcon = ({
@@ -116,6 +119,7 @@ const DockIcon = ({
   mouseY,
   className,
   children,
+  enableAnimation = true,
   ...props
 }: DockIconProps) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -124,14 +128,16 @@ const DockIcon = ({
   const defaultMouseY = useMotionValue(Infinity);
 
   const distanceCalc = useTransform(mouseX ?? defaultMouseX, (val: number) => {
+    if (!enableAnimation) return 0;
     const bounds = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
     return val - bounds.x - bounds.width / 2;
   });
 
   const distanceCalcY = useTransform(mouseY ?? defaultMouseY,(val: number) =>{
+    if (!enableAnimation) return 0;
     const bounds = ref.current?.getBoundingClientRect() ?? {y: 0, height: 0};
     return val - bounds.y - bounds.height/2
-  }) 
+  });
 
   const sizeTransform = useTransform(
     distanceCalc,
@@ -144,7 +150,6 @@ const DockIcon = ({
     [-distance, 0, distance],
     [size, magnification, size],
   );
-  
 
   const scaleSize = useSpring(sizeTransform, {
     mass: 0.1,
@@ -158,12 +163,13 @@ const DockIcon = ({
     damping: 12,
   });
 
-
+  const finalWidth = enableAnimation ? scaleSize : size;
+  const finalHeight = enableAnimation ? scaleSizeY : size;
 
   return (
     <motion.div
       ref={ref}
-      style={{ width: scaleSize, height: scaleSizeY, padding }}
+      style={{ width: finalWidth, height: finalHeight, padding }}
       className={cn(
         "flex aspect-square cursor-pointer items-center justify-center rounded-full",
         className,

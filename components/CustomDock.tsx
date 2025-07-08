@@ -78,22 +78,22 @@ const DATA = {
     social: {
       GitHub: {
         name: "GitHub",
-        url: "#",
+        url: "https://github.com/eduxdev",
         icon: Icons.github,
       },
       LinkedIn: {
         name: "LinkedIn",
-        url: "#",
+        url: "",
         icon: Icons.linkedin,
       },
       X: {
         name: "X",
-        url: "#",
+        url: "https://x.com/_edu_svpe",
         icon: Icons.x,
       },
       email: {
         name: "Send Email",
-        url: "#",
+        url: "mailto:eduardosvpe@outlook.com",
         icon: Icons.email,
       },
     },
@@ -132,7 +132,11 @@ export function CustomDock() {
     >
       {mounted && (
         <TooltipProvider>
-          <Dock direction="middle" orientation={isMobile ? "horizontal" : "vertical"}>
+          <Dock 
+            direction="middle" 
+            orientation={isMobile ? "horizontal" : "vertical"}
+            enableAnimation={!isMobile}
+          >
             {DATA.navbar.map((item) => (
               <DockIcon key={item.label}>
                 <Tooltip>
@@ -140,6 +144,7 @@ export function CustomDock() {
                     <Link
                       href={item.href}
                       aria-label={item.label}
+                      
                       className={cn(
                         buttonVariants({ variant: "ghost", size: "icon" }),
                         "size-12 rounded-full"
